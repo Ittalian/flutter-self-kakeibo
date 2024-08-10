@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "583373953616",
+    "firebase_url": "https://flutter-share-kakeibo-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "flutter-share-kakeibo",
+    "storage_bucket": "flutter-share-kakeibo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583373953616:android:f00471bdd436a7a5944f55",
+        "android_client_info": {
+          "package_name": "com.example.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBql83oQyi4MPJyqPSL6jSESSE_DjVBl-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583373953616:android:35153671a02bf597944f55",
+        "android_client_info": {
+          "package_name": "com.example.share_kakeibo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBql83oQyi4MPJyqPSL6jSESSE_DjVBl-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583373953616:android:eaff5e823e2e5752944f55",
+        "android_client_info": {
+          "package_name": "com.example.share_kakeibo_bunbun"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBql83oQyi4MPJyqPSL6jSESSE_DjVBl-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
