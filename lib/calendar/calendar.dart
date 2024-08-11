@@ -149,7 +149,7 @@ class Calendar extends HookWidget {
                     context: context,
                     builder: (_) {
                       return AlertDialog(
-                        title: const Text("今月の収支を見ますか？"),
+                        title: const Text("今月の収支を見る？"),
                         actions: <Widget>[
                           TextButton(
                               child: const Text("見る"),

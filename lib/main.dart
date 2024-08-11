@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'home/home.dart';
 import 'registration/registration.dart';
 import 'calendar/calendar.dart';
 import 'buttom_navigation_bar.dart';
@@ -43,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String price = "";
 
   final _pages = <Widget>[
-    const Home(),
     const Registration(),
     const Calendar(),
   ];
@@ -59,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     if (widget.isFromCalendar) {
-      _selectIndex = 2;
+      _selectIndex = 1;
     }
   }
 
