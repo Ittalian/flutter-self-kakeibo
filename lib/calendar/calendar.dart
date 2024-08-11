@@ -92,41 +92,23 @@ class Calendar extends HookWidget {
     num lastMonthBeautyPrice = 0;
     num lastMonthSpecialPrice = 0;
     num lastMonthOtherPrice = 0;
-    num ichiMonthFoodPrice = 0;
-    num ichiMonthAssociatePrice = 0;
-    num ichiMonthDailyPrice = 0;
-    num ichiMonthHobbyPrice = 0;
-    num ichiMonthClothPrice = 0;
-    num ichiMonthTransPrice = 0;
-    num ichiMonthBeautyPrice = 0;
-    num ichiMonthSpecialPrice = 0;
-    num ichiMonthOtherPrice = 0;
-    num moeMonthFoodPrice = 0;
-    num moeMonthAssociatePrice = 0;
-    num moeMonthDailyPrice = 0;
-    num moeMonthHobbyPrice = 0;
-    num moeMonthClothPrice = 0;
-    num moeMonthTransPrice = 0;
-    num moeMonthBeautyPrice = 0;
-    num moeMonthSpecialPrice = 0;
-    num moeMonthOtherPrice = 0;
     final oldEventsList = useState<Map<DateTime, List>>({});
     final newEventsList = useState<Map<DateTime, List>>({});
     final isAdded = useState(false);
 
     Map<DateTime, List> getEventsList(Map<DateTime, List> eventsList) {
-      final snapshot = FirebaseFirestore.instance.collection("budget").get();
+      final snapshot = FirebaseFirestore.instance.collection("budget").where('user', isEqualTo: 'いちくん').get();
       snapshot.then((QuerySnapshot querySnapshot) {
         for (int i = 0; i < querySnapshot.docs.length; i++) {
           final dateValue = getDatetime(
               "${DateTime.now().year}年${querySnapshot.docs[i]['month']}月${querySnapshot.docs[i]['day']}日");
           if (eventsList[dateValue] == null) {
             eventsList[dateValue] = [
-              "${querySnapshot.docs[i]['user']} ${querySnapshot.docs[i]['category']} ${querySnapshot.docs[i]['price']}円"
+              "${querySnapshot.docs[i]['category']} ${querySnapshot.docs[i]['price']}円"
             ];
           } else if (isAdded.value == false) {
             eventsList[dateValue]!.add(
-                "${querySnapshot.docs[i]['user']} ${querySnapshot.docs[i]['category']} ${querySnapshot.docs[i]['price']}円");
+                "${querySnapshot.docs[i]['category']} ${querySnapshot.docs[i]['price']}円");
           }
         }
         isAdded.value = true;
@@ -145,36 +127,14 @@ class Calendar extends HookWidget {
     }
 
     return Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('images/calendar.png'),
-                    fit: BoxFit.cover)),
-            child: Column(children: [
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Container(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 6),
-                        width: 100,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: const Column(children: [
-                          Text(
-                            "🌟 いちくん　",
-                            style: TextStyle(
-                              fontSize: 11,
-                            ),
-                          ),
-                          Text(
-                            "❤ もえちゃん",
-                            style: TextStyle(
-                              fontSize: 11,
-                            ),
-                          ),
-                        ]),
-                      ))),
-              TableCalendar(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/calendar.png'), fit: BoxFit.cover)),
+        child: Column(children: [
+          Container(
+              margin: const EdgeInsets.only(top: 30),
+              color: Colors.white.withOpacity(0.5),
+              child: TableCalendar(
                 firstDay: DateTime.utc(DateTime.now().year, 1, 1),
                 lastDay: DateTime.utc(DateTime.now().year + 100, 12, 31),
                 focusedDay: focusedDayState.value,
@@ -189,7 +149,7 @@ class Calendar extends HookWidget {
                     context: context,
                     builder: (_) {
                       return AlertDialog(
-                        title: const Text("詳細を見ますか？"),
+                        title: const Text("今月の収支を見ますか？"),
                         actions: <Widget>[
                           TextButton(
                               child: const Text("見る"),
@@ -199,6 +159,7 @@ class Calendar extends HookWidget {
                                   //  データ取得処理
                                   await FirebaseFirestore.instance
                                       .collection('budget')
+                                      .where('user', isEqualTo: 'いちくん')
                                       .where('year',
                                           isEqualTo: DateTime.now().year)
                                       .where('month',
@@ -232,6 +193,7 @@ class Calendar extends HookWidget {
                                   });
                                   await FirebaseFirestore.instance
                                       .collection('budget')
+                                      .where('user', isEqualTo: 'いちくん')
                                       .where('year',
                                           isEqualTo: DateTime.now().year)
                                       .where('month',
@@ -269,87 +231,6 @@ class Calendar extends HookWidget {
                                     lastMonthOtherPrice =
                                         lastMonthPriceList.otherPrice;
                                   });
-                                  await FirebaseFirestore.instance
-                                      .collection('budget')
-                                      .where('year',
-                                          isEqualTo: DateTime.now().year)
-                                      .where('month',
-                                          isEqualTo:
-                                              selectedDayState.value.month)
-                                      .where('user', isEqualTo: "もえちゃん")
-                                      .get()
-                                      .then((QuerySnapshot querySnapshot) {
-                                    PriceList moeMonthPriceList = setData(
-                                        moeMonthFoodPrice,
-                                        moeMonthAssociatePrice,
-                                        moeMonthDailyPrice,
-                                        moeMonthHobbyPrice,
-                                        moeMonthClothPrice,
-                                        moeMonthTransPrice,
-                                        moeMonthBeautyPrice,
-                                        moeMonthSpecialPrice,
-                                        moeMonthOtherPrice,
-                                        querySnapshot);
-                                    moeMonthFoodPrice =
-                                        moeMonthPriceList.foodPrice;
-                                    moeMonthAssociatePrice =
-                                        moeMonthPriceList.associatePrice;
-                                    moeMonthDailyPrice =
-                                        moeMonthPriceList.dailyPrice;
-                                    moeMonthHobbyPrice =
-                                        moeMonthPriceList.hobbyPrice;
-                                    moeMonthClothPrice =
-                                        moeMonthPriceList.clothPrice;
-                                    moeMonthTransPrice =
-                                        moeMonthPriceList.transPrice;
-                                    moeMonthBeautyPrice =
-                                        moeMonthPriceList.beautyPrice;
-                                    moeMonthSpecialPrice =
-                                        moeMonthPriceList.specialPrice;
-                                    moeMonthOtherPrice =
-                                        moeMonthPriceList.otherPrice;
-                                  });
-                                  await FirebaseFirestore.instance
-                                      .collection('budget')
-                                      .where('year',
-                                          isEqualTo: DateTime.now().year)
-                                      .where('month',
-                                          isEqualTo:
-                                              selectedDayState.value.month)
-                                      .where('user', isEqualTo: "いちくん")
-                                      .get()
-                                      .then((QuerySnapshot querySnapshot) {
-                                    PriceList ichiMonthPriceList = setData(
-                                        ichiMonthFoodPrice,
-                                        ichiMonthAssociatePrice,
-                                        ichiMonthDailyPrice,
-                                        ichiMonthHobbyPrice,
-                                        ichiMonthClothPrice,
-                                        ichiMonthTransPrice,
-                                        ichiMonthBeautyPrice,
-                                        ichiMonthSpecialPrice,
-                                        ichiMonthOtherPrice,
-                                        querySnapshot);
-                                    ichiMonthFoodPrice =
-                                        ichiMonthPriceList.foodPrice;
-                                    ichiMonthAssociatePrice =
-                                        ichiMonthPriceList.associatePrice;
-                                    ichiMonthDailyPrice =
-                                        ichiMonthPriceList.dailyPrice;
-                                    ichiMonthHobbyPrice =
-                                        ichiMonthPriceList.hobbyPrice;
-                                    ichiMonthClothPrice =
-                                        ichiMonthPriceList.clothPrice;
-                                    ichiMonthTransPrice =
-                                        ichiMonthPriceList.transPrice;
-                                    ichiMonthBeautyPrice =
-                                        ichiMonthPriceList.beautyPrice;
-                                    ichiMonthSpecialPrice =
-                                        ichiMonthPriceList.specialPrice;
-                                    ichiMonthOtherPrice =
-                                        ichiMonthPriceList.otherPrice;
-                                  });
-                                  // ここまで
                                 } finally {
                                   await LoadingDialog.hide(context);
                                   Navigator.push(
@@ -393,46 +274,7 @@ class Calendar extends HookWidget {
                                                       lastMonthSpecialPrice,
                                                   lastMonthOtherPrice:
                                                       lastMonthOtherPrice,
-                                                  ichiMonthFoodPrice:
-                                                      ichiMonthFoodPrice,
-                                                  ichiMonthAssociatePrice:
-                                                      ichiMonthAssociatePrice,
-                                                  ichiMonthDailyPrice:
-                                                      ichiMonthDailyPrice,
-                                                  ichiMonthHobbyPrice:
-                                                      ichiMonthHobbyPrice,
-                                                  ichiMonthClothPrice:
-                                                      ichiMonthClothPrice,
-                                                  ichiMonthTransPrice:
-                                                      ichiMonthTransPrice,
-                                                  ichiMonthBeautyPrice:
-                                                      ichiMonthBeautyPrice,
-                                                  ichiMonthSpecialPrice:
-                                                      ichiMonthSpecialPrice,
-                                                  ichiMonthOtherPrice:
-                                                      ichiMonthOtherPrice,
-                                                  moeMonthFoodPrice:
-                                                      moeMonthFoodPrice,
-                                                  moeMonthAssociatePrice:
-                                                      moeMonthAssociatePrice,
-                                                  moeMonthDailyPrice:
-                                                      moeMonthDailyPrice,
-                                                  moeMonthHobbyPrice:
-                                                      moeMonthHobbyPrice,
-                                                  moeMonthClothPrice:
-                                                      moeMonthClothPrice,
-                                                  moeMonthTransPrice:
-                                                      moeMonthTransPrice,
-                                                  moeMonthBeautyPrice:
-                                                      moeMonthBeautyPrice,
-                                                  moeMonthSpecialPrice:
-                                                      moeMonthSpecialPrice,
-                                                  moeMonthOtherPrice:
-                                                      moeMonthOtherPrice,
-                                                  month: selectedDayState
-                                                      .value.month,
-                                                  day: selectedDayState
-                                                      .value.day)));
+                                                      )));
                                 }
                               }),
                           TextButton(
@@ -455,7 +297,13 @@ class Calendar extends HookWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           for (int i = 0; i < events.length; i++)
-                            if (i == 3)
+                            if (i < 3)
+                              const Text(
+                                "🌟",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 10),
+                              )
+                            else if (i == 3)
                               const Padding(
                                   padding: EdgeInsets.only(left: 3),
                                   child: Text(
@@ -464,58 +312,43 @@ class Calendar extends HookWidget {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 10),
                                   ))
-                            else if (i < 4)
-                              if (events[i].toString().contains("いちくん"))
-                                const Text(
-                                  "🌟",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                )
-                              else if (events[i].toString().contains("もえちゃん"))
-                                const Text(
-                                  "❤",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                )
                         ]);
                   },
                 ),
-              ),
-              ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: getEventForDay(selectedDayState.value)
-                      .map((event) => Container(
-                          margin: const EdgeInsets.fromLTRB(20, 0, 40, 5),
-                          child: Row(children: [
-                            Expanded(
-                                child: SizedBox(
-                                    width: screenWidth * 0.8,
-                                    child: ListTile(
-                                      title: Text(event.toString()),
-                                    ))),
-                            ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return AlertDialog(
-                                        title: const Text("削除しますか？"),
-                                        actions: <Widget>[
-                                          TextButton(
-                                              child: const Text("する"),
-                                              onPressed: () async {
-                                                List<String> deleteData =
-                                                    event.split(" ");
-                                                num deletePrice = num.parse(
-                                                    deleteData[
-                                                            deleteData.length -
-                                                                1]
-                                                        .replaceAll("円", ""));
-                                                final query = await FirebaseFirestore
-                                                    .instance
+              )),
+          ListView(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              children: getEventForDay(selectedDayState.value)
+                  .map((event) => Container(
+                      color: Colors.white,
+                      margin: const EdgeInsets.only(bottom: 5),
+                      child: Row(children: [
+                        Expanded(
+                            child: SizedBox(
+                                width: screenWidth * 0.8,
+                                child: ListTile(
+                                  title: Text(event.toString()),
+                                ))),
+                        ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: const Text("削除しますか？"),
+                                    actions: <Widget>[
+                                      TextButton(
+                                          child: const Text("する"),
+                                          onPressed: () async {
+                                            List<String> deleteData =
+                                                event.split(" ");
+                                            num deletePrice = num.parse(
+                                                deleteData[
+                                                        deleteData.length - 1]
+                                                    .replaceAll("円", ""));
+                                            final query =
+                                                await FirebaseFirestore.instance
                                                     .collection("budget")
                                                     .where('year',
                                                         isEqualTo:
@@ -538,37 +371,37 @@ class Calendar extends HookWidget {
                                                     .where('price',
                                                         isEqualTo: deletePrice)
                                                     .get();
-                                                query.docs[0].reference
-                                                    .delete();
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const MyHomePage(
-                                                                isFromCalendar:
-                                                                    true)));
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  content: const Text('削除しました'),
-                                                  action: SnackBarAction(
-                                                    label: 'OK',
-                                                    onPressed: () {},
-                                                  ),
-                                                ));
-                                              }),
-                                          TextButton(
-                                              child: const Text("やっぱやめる"),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              }),
-                                        ],
-                                      );
-                                    },
+                                            query.docs[0].reference.delete();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const MyHomePage(
+                                                            isFromCalendar:
+                                                                true)));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: const Text('削除しました'),
+                                              action: SnackBarAction(
+                                                label: 'OK',
+                                                onPressed: () {},
+                                              ),
+                                            ));
+                                          }),
+                                      TextButton(
+                                          child: const Text("やっぱやめる"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          }),
+                                    ],
                                   );
                                 },
-                                child: const Text("削除"))
-                          ])))
-                      .toList()),
-            ]));
+                              );
+                            },
+                            child: const Text("削除")),
+                            const Padding(padding: EdgeInsets.only(right: 10))
+                      ])))
+                  .toList()),
+        ]));
   }
 }

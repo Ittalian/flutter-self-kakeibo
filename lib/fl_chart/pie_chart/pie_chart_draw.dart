@@ -36,28 +36,28 @@ class PieChartDraw extends StatelessWidget {
         foodPrice, '食費', Colors.red
       ),
       PieChartProperty(
-        associatePrice, '交際費', const Color.fromARGB(255, 247, 1, 255)
+        associatePrice, '交際費', const Color.fromARGB(255, 247, 1, 255).withOpacity(0.5)
       ),
       PieChartProperty(
-        dailyPrice, '日用品', const Color(0xFFFDD609)
+        dailyPrice, '日用品', const Color(0xFFFDD609).withOpacity(0.5)
       ),
       PieChartProperty(
-        hobbyPrice, '趣味費', const Color.fromARGB(255, 45, 6, 205)
+        hobbyPrice, '趣味費', const Color.fromARGB(255, 45, 6, 205).withOpacity(0.5)
       ),
       PieChartProperty(
-        clothPrice, '被服費', const Color.fromARGB(255, 0, 149, 255)
+        clothPrice, '被服費', const Color.fromARGB(255, 0, 149, 255).withOpacity(0.5)
       ),
       PieChartProperty(
-        transPrice, '交通費', const Color.fromARGB(255, 6, 144, 6)
+        transPrice, '交通費', const Color.fromARGB(255, 6, 144, 6).withOpacity(0.5)
       ),
       PieChartProperty(
-        beautyPrice, '美容費', const Color.fromARGB(255, 148, 70, 123)
+        beautyPrice, '美容費', const Color.fromARGB(255, 148, 70, 123).withOpacity(0.5)
       ),
       PieChartProperty(
-        specialPrice, '特別費', const Color.fromARGB(255, 255, 140, 0)
+        specialPrice, '特別費', const Color.fromARGB(255, 255, 140, 0).withOpacity(0.5)
       ),
       PieChartProperty(
-        otherPrice, 'その他', const Color.fromARGB(255, 198, 116, 2)
+        otherPrice, 'その他', const Color.fromARGB(255, 198, 116, 2).withOpacity(0.5)
       ),
     ];
 
